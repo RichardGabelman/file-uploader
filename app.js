@@ -3,7 +3,8 @@ const express = require("express");
 const path = require("node:path");
 const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
-const { PrismaClient } = require("@prisma/client");
+const prisma = require('./prisma.js');
+const passport = require("passport");
 
 const app = express();
 app.set("views", path.join(__dirname, "views"));
@@ -18,7 +19,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: new PrismaSessionStore(
-      new PrismaClient(),
+      prisma,
       {
         checkPeriod: 2 * 60 * 1000,  //ms
         dbRecordIdIsSessionId: true,
@@ -27,3 +28,7 @@ app.use(
     )
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: true }));
