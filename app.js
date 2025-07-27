@@ -6,6 +6,7 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const prisma = require('./prisma.js');
 const passport = require("passport");
 const authRouter = require("./routes/auth.js");
+const indexRouter = require("./routes/index.js");
 
 const app = express();
 app.set("views", path.join(__dirname, "views"));
@@ -31,6 +32,8 @@ app.use(
 );
 
 app.use("/auth", authRouter);
+
+app.use("/", indexRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
