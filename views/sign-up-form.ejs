@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+</head>
+<body>
+  <h1>Sign Up</h1>
+  <% if (locals.errors) {%>
+    <ul>
+      <% errors.forEach(function(error) { %>
+        <li><%= error.msg %></li>
+      <% }); %>
+    </ul>
+  <% } %>
+  <form action="/auth/sign-up" method="POST">
+    <label for="username">Username</label>
+    <input id="username" name="username" placeholder="username" type="text" />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" />
+    <label for="confirm">Confirm Password</label>
+    <input id="confirm" name="confirm" type="password" />
+    <button type="submit">Sign Up</button>
+  </form>
+</body>
+</html>
