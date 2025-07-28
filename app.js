@@ -49,7 +49,7 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).send(err.message);
 });
 
-app.all("*", (req, res) => {
+app.use((req, res) => {
   res.status(404).send("<h1>404! Page not found</h1>");
 });
 

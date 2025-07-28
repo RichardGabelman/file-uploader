@@ -5,11 +5,15 @@ const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const prisma = require("../prisma.js");
 
+router.get("/log-in-failure", (req, res) => {
+  res.send("Login failed. Please try again.");
+});
+
 router.post(
   "/log-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/",
+    failureRedirect: "/log-in-failure",
   })
 );
 
