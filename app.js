@@ -31,6 +31,15 @@ app.use(
   })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.use("/auth", authRouter);
 
 app.use("/", indexRouter);
@@ -44,6 +53,7 @@ app.all("*", (req, res) => {
   res.status(404).send("<h1>404! Page not found</h1>");
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.urlencoded({ extended: true }));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`File Uploader - listening on port ${PORT}!`);
+});
