@@ -1,23 +1,19 @@
-const express = require("express");
-const passport = require("passport");
+const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const prisma = require("../prisma.js");
 
-router.get("/log-in-failure", (req, res) => {
-  res.send("Login failed. Please try again.");
-});
-
 router.post(
   "/log-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/log-in-failure",
+    failureRedirect: "/",
   })
 );
 
-router.get("/sign-up", (req, res) => res.render("sign-up-form"));
+router.get("/sign-up", (req, res) => res.render("sign-up-form", { errors: [] }));
 
 router.post(
   "/sign-up",
@@ -34,18 +30,18 @@ router.post(
 
     try {
       const existingUser = await prisma.user.findUnique({
-        where: { username: req.body.username },
-      });
-      if (existingUser) {
-        return res.status(400).render("sign-up-form", {
-          errors: [{ msg: "Username already taken" }],
-        });
-      }
+  where: { username: req.body.username }
+});
+if (existingUser) {
+  return res.status(400).render("sign-up-form", {
+    errors: [{ msg: "Username already taken" }]
+  });
+}
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const user = await prisma.user.create({
         data: {
           username: req.body.username,
-          password: hashedPassword,
+          password: hashedPassword
         },
       });
       res.redirect("/");

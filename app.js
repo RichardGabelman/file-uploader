@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const path = require("node:path");
 const expressSession = require("express-session");
@@ -7,6 +6,9 @@ const prisma = require('./prisma.js');
 const passport = require("passport");
 const authRouter = require("./routes/auth.js");
 const indexRouter = require("./routes/index.js");
+
+require("dotenv").config();
+require("./config/passport.js");
 
 const app = express();
 app.set("views", path.join(__dirname, "views"));
