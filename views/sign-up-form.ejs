@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>Sign Up</h1>
-  <% if (locals.errors) {%>
+  <% if (errors) {%>
     <ul>
       <% errors.forEach(function(error) { %>
         <li><%= error.msg %></li>
