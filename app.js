@@ -4,6 +4,7 @@ const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const prisma = require('./prisma.js');
 const passport = require("passport");
+const uploadRouter = require("./routes/upload.js");
 const authRouter = require("./routes/auth.js");
 const indexRouter = require("./routes/index.js");
 
@@ -41,6 +42,8 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use("/file-upload", uploadRouter);
 
 app.use("/auth", authRouter);
 
