@@ -8,6 +8,10 @@
     <% if (currentUser) {%>
     <h1>WELCOME BACK <%= currentUser.username %></h1>
     <a href="/auth/log-out">LOG OUT</a>
+    <form action="/file-upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploadedFile" />
+      <button type="submit">Upload</button>
+    </form>
     <% } else { %>
     <h1>please log in</h1>
     <form action="/auth/log-in" method="POST">
