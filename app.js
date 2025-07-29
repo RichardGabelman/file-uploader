@@ -4,9 +4,10 @@ const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const prisma = require('./prisma.js');
 const passport = require("passport");
-const uploadRouter = require("./routes/upload.js");
-const authRouter = require("./routes/auth.js");
-const indexRouter = require("./routes/index.js");
+const folderRouter = require("./routes/folderRouter.js");
+const uploadRouter = require("./routes/uploadRouter.js");
+const authRouter = require("./routes/authRouter.js");
+const indexRouter = require("./routes/indexRouter.js");
 
 require("dotenv").config();
 require("./config/passport.js");
@@ -42,6 +43,8 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use("/folders", folderRouter);
 
 app.use("/file-upload", uploadRouter);
 
