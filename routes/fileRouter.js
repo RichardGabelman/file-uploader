@@ -12,7 +12,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 router.post(
-  "/",
+  "/upload",
   ensureAuthenticated,
   upload.single("uploadedFile"),
   async (req, res, next) => {
