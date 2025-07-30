@@ -13,6 +13,46 @@
       <button type="submit">Upload</button>
     </form>
     <a href="/folders/new">New Folder</a>
+    <ul>
+      <% folders.forEach((folder) => { %>
+      <div
+        style="
+          border: 1px solid black;
+          max-width: max-content;
+          padding: 20px;
+          margin-bottom: 10px;
+        "
+      >
+        <h2><a href="/<%= currentUser.id %>/folders/<%= folder.id %>"><%- folder.name %></a></h2>
+        <form
+          action="/folders/delete-folder/<%= folder.id %>"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">❌</button>
+        </form>
+      </div>
+      <% }); %>
+      <% loneFiles.forEach((file) => { %>
+      <div
+        style="
+          border: 1px solid black;
+          max-width: max-content;
+          padding: 20px;
+          margin-bottom: 10px;
+        "
+      >
+        <h2><a href="/<%= currentUser.id %>/files/<%= file.id %>"><%- file.name %></a></h2>
+        <form
+          action="/files/delete-file/<%= file.id %>"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">❌</button>
+        </form>
+      </div>
+      <% }); %>
+    </ul>
     <% } else { %>
     <h1>please log in</h1>
     <form action="/auth/log-in" method="POST">
