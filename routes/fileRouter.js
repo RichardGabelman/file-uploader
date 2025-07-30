@@ -11,6 +11,11 @@ function ensureAuthenticated(req, res, next) {
   res.redirect("/");
 }
 
+// TODO
+router.get("/:fileId", ensureAuthenticated, async (req, res, next) => {
+
+});
+
 router.post(
   "/upload",
   ensureAuthenticated,
@@ -20,19 +25,29 @@ router.post(
       return res.status(400).send("No file uploaded");
     }
     try {
+      const folderId = req.body.folderId ? parseInt(req.body.folderId, 10) : null;
+      console.log("folderId:", folderId);
+
       await prisma.file.create({
         data: {
           name: req.file.originalname,
           authorId: req.user.id,
           size: req.file.size,
+          folderId: folderId,
         },
       });
+
+      console.log(`File ${req.file.originalname} uploaded successfully!`);
+      res.redirect(folderId ? `/folders/${folderId}` : "/");
     } catch (err) {
       next(err);
     }
-    console.log(`File ${req.file.originalname} uploaded successfully!`);
-    res.redirect("/");
   }
 );
+
+// TODO
+router.post("/delete-file/:fileId", ensureAuthenticated, async (req, res, next) => {
+
+});
 
 module.exports = router;

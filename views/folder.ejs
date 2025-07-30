@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Folder: <%= folder.name %></title>
+  </head>
+  <body>
+    <h1>Folder: <%= folder.name %></h1>
+    <h2><a href="/">Back to home</a></h2>
+    <form action="/files/upload" method="post" enctype="multipart/form-data">
+      <input type="hidden" id="folderId" name="folderId" value="<%= folder.id %>">
+      <input type="file" name="uploadedFile" />
+      <button type="submit">Upload</button>
+    </form>
+    <ul>
+      <% files.forEach((file) => { %>
+      <div
+        style="
+          border: 1px solid black;
+          max-width: max-content;
+          padding: 20px;
+          margin-bottom: 10px;
+        "
+      >
+        <h2>[File]</h2>
+        <h3><a href="/files/<%= file.id %>"><%- file.name %></a></h3>
+        <form
+          action="/files/delete-file/<%= file.id %>"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">❌</button>
+        </form>
+      </div>
+      <% }); %>
+    </ul>
+  </body>
+</html>
