@@ -23,7 +23,7 @@
           margin-bottom: 10px;
         "
       >
-        <h2><a href="/<%= currentUser.id %>/folders/<%= folder.id %>"><%- folder.name %></a></h2>
+        <h2><a href="/folders/<%= folder.id %>"><%- folder.name %></a></h2>
         <form
           action="/folders/delete-folder/<%= folder.id %>"
           method="POST"
@@ -42,7 +42,7 @@
           margin-bottom: 10px;
         "
       >
-        <h2><a href="/<%= currentUser.id %>/files/<%= file.id %>"><%- file.name %></a></h2>
+        <h2><a href="/files/<%= file.id %>"><%- file.name %></a></h2>
         <form
           action="/files/delete-file/<%= file.id %>"
           method="POST"
