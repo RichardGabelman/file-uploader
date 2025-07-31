@@ -15,32 +15,32 @@ router.get("/new", (req, res) => {
 
 router.get("/:folderId", ensureAuthenticated, async (req, res, next) => {
   try {
-    if (req.isAuthenticated()) {
-      const folderId = parseInt(req.params.folderId, 10);
+    const folderId = parseInt(req.params.folderId, 10);
 
-      if (isNaN(folderId)) {
-        return res.status(400).send("Invalid folder ID");
-      }
-
-      const [folder, files] = await Promise.all([
-        prisma.folder.findUnique({
-          where: { id: folderId, authorId: req.user.id },
-        }),
-        prisma.file.findMany({
-          where: {
-            authorId: req.user.id,
-            folderId: folderId,
-          },
-        }),
-      ]);
-      
-      return res.render("folder", {
-        folder,
-        files,
-      });
-    } else {
-      return res.redirect("/");
+    if (isNaN(folderId)) {
+      return res.status(400).send("Invalid folder ID");
     }
+
+    const [folder, files] = await Promise.all([
+      prisma.folder.findUnique({
+        where: { id: folderId, authorId: req.user.id },
+      }),
+      prisma.file.findMany({
+        where: {
+          authorId: req.user.id,
+          folderId: folderId,
+        },
+      }),
+    ]);
+
+    if (!folder) {
+      throw new Error("Folder not found or not authorized");
+    }
+
+    return res.render("folder", {
+      folder,
+      files,
+    });
   } catch (err) {
     next(err);
   }

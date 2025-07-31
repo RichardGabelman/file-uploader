@@ -13,7 +13,30 @@ function ensureAuthenticated(req, res, next) {
 
 // TODO
 router.get("/:fileId", ensureAuthenticated, async (req, res, next) => {
+  try {
+    const fileId = parseInt(req.params.fileId, 10);
 
+    if (isNaN(fileId)) {
+      return res.status(400).send("Invalid file ID");
+    }
+
+    const file = await prisma.file.findFirst({
+      where: {
+        id: fileId,
+        authorId: req.user.id,
+      },
+    });
+
+    if (!file) {
+      throw new Error("File not found or not authorized");
+    }
+
+    return res.render("file", {
+      file,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post(
@@ -25,7 +48,9 @@ router.post(
       return res.status(400).send("No file uploaded");
     }
     try {
-      const folderId = req.body.folderId ? parseInt(req.body.folderId, 10) : null;
+      const folderId = req.body.folderId
+        ? parseInt(req.body.folderId, 10)
+        : null;
       console.log("folderId:", folderId);
 
       await prisma.file.create({
@@ -46,8 +71,10 @@ router.post(
 );
 
 // TODO
-router.post("/delete-file/:fileId", ensureAuthenticated, async (req, res, next) => {
-
-});
+router.post(
+  "/delete-file/:fileId",
+  ensureAuthenticated,
+  async (req, res, next) => {}
+);
 
 module.exports = router;

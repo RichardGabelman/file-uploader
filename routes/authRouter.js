@@ -40,7 +40,7 @@ router.post(
         });
       }
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const user = await prisma.user.create({
+      await prisma.user.create({
         data: {
           username: req.body.username,
           password: hashedPassword,
