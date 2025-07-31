@@ -5,10 +5,18 @@
     <title>Folder: <%= folder.name %></title>
   </head>
   <body>
-    <h1>Folder: <%= folder.name %></h1>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <h1>Folder: <%= folder.name %></h1>
+      <a href="/folders/<%= folder.id %>/update">🏷️✏️</a>
+    </div>
     <h2><a href="/">Back to home</a></h2>
     <form action="/files/upload" method="post" enctype="multipart/form-data">
-      <input type="hidden" id="folderId" name="folderId" value="<%= folder.id %>">
+      <input
+        type="hidden"
+        id="folderId"
+        name="folderId"
+        value="<%= folder.id %>"
+      />
       <input type="file" name="uploadedFile" />
       <button type="submit">Upload</button>
     </form>

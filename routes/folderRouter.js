@@ -13,6 +13,51 @@ router.get("/new", (req, res) => {
   res.render("new-folder");
 });
 
+router.get("/:folderId/update", ensureAuthenticated, async (req, res, next) => {
+  try {
+    const folderId = parseInt(req.params.folderId, 10);
+
+    const folder = await prisma.folder.findFirst({
+      where: {
+        id: folderId,
+        authorId: req.user.id,
+      }
+    });
+
+    if (!folder) {
+      throw new Error("Folder not found or not authorized");
+    }
+
+    res.render("update-folder", { folder });
+  } catch (err) {
+    next(err);
+  }
+})
+
+router.post(
+  "/:folderId/update",
+  ensureAuthenticated,
+  async (req, res, next) => {
+    try {
+      const folderId = parseInt(req.params.folderId, 10);
+
+      await prisma.folder.update({
+        where: {
+          id: folderId,
+          authorId: req.user.id,
+        },
+        data: {
+          name: req.body.name,
+        },
+      });
+
+      res.redirect("/folders/" + folderId);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 router.get("/:folderId", ensureAuthenticated, async (req, res, next) => {
   try {
     const folderId = parseInt(req.params.folderId, 10);
@@ -56,7 +101,6 @@ router.post("/new", ensureAuthenticated, async (req, res, next) => {
     });
     res.redirect("/");
   } catch (error) {
-    console.error(error);
     next(error);
   }
 });
