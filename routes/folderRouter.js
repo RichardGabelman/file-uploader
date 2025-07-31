@@ -61,11 +61,35 @@ router.post("/new", ensureAuthenticated, async (req, res, next) => {
   }
 });
 
-// TODO
 router.post(
   "/delete-folder/:folderId",
   ensureAuthenticated,
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    try {
+      const folderId = parseInt(req.params.folderId, 10);
+
+      await prisma.file.updateMany({
+        where: {
+          id: folderId,
+          authorId: req.user.id,
+        },
+        data: {
+          folderId: null,
+        },
+      });
+
+      await prisma.folder.delete({
+        where: {
+          id: folderId,
+          authorId: req.user.id,
+        },
+      });
+
+      res.redirect("/");
+    } catch (err) {
+      next(err);
+    }
+  }
 );
 
 module.exports = router;

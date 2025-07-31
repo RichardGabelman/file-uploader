@@ -52,8 +52,6 @@ router.post(
         ? parseInt(req.body.folderId, 10)
         : null;
 
-      console.log("folderId:", folderId);
-
       await prisma.file.create({
         data: {
           name: req.file.originalname,
@@ -62,8 +60,6 @@ router.post(
           folderId: folderId,
         },
       });
-
-      console.log(`File ${req.file.originalname} uploaded successfully!`);
 
       res.redirect(folderId ? `/folders/${folderId}` : "/");
     } catch (err) {
