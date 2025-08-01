@@ -10,25 +10,25 @@ datasource db {
 model Session {
   id        String   @id
   sid       String   @unique
-  data      String   @db.Text // MediumText may be needed for MySql
+  data      String
   expiresAt DateTime
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
+  id       Int      @id @default(autoincrement())
+  username String   @unique
   password String
   files    File[]
-  folders Folder[]
+  folders  Folder[]
 }
 
 model Folder {
-  id Int @id @default(autoincrement())
-  name String
+  id        Int      @id @default(autoincrement())
+  name      String
   createdAt DateTime @default(now())
-  author User @relation(fields: [authorId], references: [id])
-  authorId Int
-  files File[]
+  authorId  Int
+  files     File[]
+  author    User     @relation(fields: [authorId], references: [id])
 }
 
 model File {
@@ -36,8 +36,9 @@ model File {
   name       String
   size       Float
   uploadTime DateTime @default(now())
-  author     User     @relation(fields: [authorId], references: [id])
   authorId   Int
-  folder Folder? @relation(fields: [folderId], references: [id])
-  folderId Int?
+  folderId   Int?
+  fileUrl    String
+  author     User     @relation(fields: [authorId], references: [id])
+  folder     Folder?  @relation(fields: [folderId], references: [id])
 }

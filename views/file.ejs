@@ -6,6 +6,7 @@
   </head>
   <body>
     <h1>File: <%= file.name %></h1>
+    <a href="/files/<%= file.id %>/download">Download</a>
     <h2><a href="/">Back to home</a></h2>
     <h3>Size: <%= file.size %> bytes</h3>
     <h3>Upload time: <%= file.uploadTime %></h3>
