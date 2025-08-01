@@ -38,7 +38,8 @@ model File {
   uploadTime DateTime @default(now())
   authorId   Int
   folderId   Int?
-  fileUrl    String
+  storageUrl String
+  storageKey String
   author     User     @relation(fields: [authorId], references: [id])
   folder     Folder?  @relation(fields: [folderId], references: [id])
 }
